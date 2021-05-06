@@ -2,19 +2,23 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 class Perceptron:
-    def __init__(self):
+    def __init__(self, r=.5):
         self.bias = None
-        self.weights = 0
-        self.r = None  # learning rate
+        self.x_weight = 0
+        self.y_weight = 0
+        self.r = r  # learning rate
+        self.category = None
         self.x_train = None
         self.y_train = None
 
-    def train(self, x_train, y_train):
+    def train(self, x_train, y_train, category):
         """training algorithm"""
-        assert len(x_train) == len(y_train), 'unequal numbers of x and y values'
+        assert len(x_train) == len(y_train) == len(category), 'unequal numbers of values'
         self.x_train = x_train
         self.y_train = y_train
+        self.category = category
         # TODO: training algorithm
         pass
 
@@ -34,7 +38,6 @@ class Perceptron:
         # TODO: scatter-plot
         # TODO: line-plot
         pass
-
 
 
 def main():
