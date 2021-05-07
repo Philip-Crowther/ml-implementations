@@ -44,15 +44,6 @@ class Perceptron:
                 correct += 1
         return correct / len(test_data)
 
-    def visualize(self):
-        """visualizes the training set and the perceptron"""
-        assert self.data, 'error: no training data'
-        assert len(self.data[0]) == 3, 'error: dataset has too many dimensions to plot'
-        # TODO: scatter-plot
-        # sns.scatterplot()
-        # TODO: line-plot
-        pass
-
 
 def main():
     pass
