@@ -4,22 +4,19 @@ import seaborn as sns
 
 
 class Perceptron:
-    def __init__(self, r=.5):
-        self.bias = None
-        self.x_weight = 0
-        self.y_weight = 0
+    def __init__(self, r=.25):
+        self.w = [0, 0, 0]
         self.r = r  # learning rate
-        self.category = None
-        self.x_train = None
-        self.y_train = None
+        self.data = None
 
-    def train(self, x_train, y_train, category):
+    def train(self, data):
         """training algorithm"""
-        assert len(x_train) == len(y_train) == len(category), 'unequal numbers of values'
-        self.x_train = x_train
-        self.y_train = y_train
-        self.category = category
+        self.data = data
         # TODO: training algorithm
+        for datum in data:
+            for i in range(len(datum)-1):
+                # update the weights for each dimension of the data
+                self.w[i] = self.w[i] + self.r * datum[-1] * x # datum[-1] is the classification for a piece of data
         pass
 
     def predict(self, x):
@@ -34,8 +31,8 @@ class Perceptron:
 
     def visualize(self):
         """visualizes the training set and the perceptron"""
-        assert self.x_train and self.y_train, 'error: no training data'
-        # TODO: scatter-plot
+        assert self.x_train, 'error: no training data'
+        sns.scatterplot(x=self.x_train, y=self.y_train, hue=self.category)
         # TODO: line-plot
         pass
 
