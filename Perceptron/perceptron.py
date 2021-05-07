@@ -7,26 +7,28 @@ class Perceptron:
         self.w = None
         self.r = r  # learning rate
 
-    def train(self, data, goal=1.0, cycles=100):
+    def train(self, data, goal=.99, cycles=100):
         """training algorithm"""
+        # initialize weights, first weight in self.w is the bias
         self.w = [0 for _ in range(len(data))]
         # TODO: tune/troubleshoot training algorithm
         # train the perceptron until it either reaches a certain accuracy or completes a certain number of trainings
-        while cycles and self.accuracy(data) < goal:  # while too many mis-classifications
+        while cycles or self.accuracy(data) < goal:
             cycles -= 1
             for datum in data:
                 for i in range(1, len(datum)):
-                    # update the weights for each dimension of the data if it is predicted incorrectly
-                    if self.w[0] + sum([self.w[i] * datum[i] for i in range(1, len(datum))]) > 0:
-                        if datum[0] == 1:
-                            self.w[i] = self.w[i] + self.r * datum[0] * datum[
-                                i]  # datum[0] is the classification for a piece of data
-                    elif datum[0] == -1:
+                    # update the weights for each dimension of the data if this piece of data was mis-predicted
+                    if datum[0] == 1 and self.predict(datum) <= 0:
+                        self.w[i] = self.w[i] + self.r * datum[0] * datum[i]  # datum[0] is the classification for a piece of data
+                    elif datum[0] == -1 and self.predict(datum) > 0:
                         self.w[i] = self.w[i] + self.r * datum[0] * datum[i]
-        pass
 
-    def predict(self, data):
-        """categorizes a set of data"""
+    def predict(self, datum):
+        """predicts for a single data point"""
+        return self.w[0] + sum([self.w[i] * datum[i] for i in range(len(1, datum))])
+
+    def classify(self, data):
+        """classifies a set of data"""
         return [[1] + data[i] if self.w[0] + sum([self.w[j + 1] * data[i][j] for j in range(len(data[i]))]) > 0 else [-1] + data[i] for i in range(len(data))]
 
     def accuracy(self, test_data):
@@ -34,10 +36,9 @@ class Perceptron:
         # TODO: tune/troubleshoot accuracy algorithm
         correct = 0
         for datum in test_data:
-            if self.w[0] + sum([datum[i] * self.w[i] for i in range(1, len(datum))]) > 0:
-                if datum[0] == 1:
-                    correct += 1
-            elif datum[0] == -1:
+            if datum[0] == 1 and self.predict(datum) > 0:
+                correct += 1
+            elif datum[0] == -1 and self.predict(datum) <= 0:
                 correct += 1
         return correct / len(test_data)
 
@@ -56,7 +57,7 @@ def main():
     p.train(data)
     print('accuracy with original dataset: ', p.accuracy(data))
     print('accuracy for accuracy_test_data', p.accuracy(accuracy_test_data))
-    predict_data = p.predict(predict_data)
+    predict_data = p.classify(predict_data)
     print('accuracy with test set: ', p.accuracy(predict_data))
 
 
