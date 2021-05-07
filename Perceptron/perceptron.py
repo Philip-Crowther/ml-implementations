@@ -5,18 +5,26 @@ import seaborn as sns
 
 class Perceptron:
     def __init__(self, r=.25):
-        self.w = [0, 0, 0]
+        self.w = None
         self.r = r  # learning rate
         self.data = None
 
-    def train(self, data):
+    def train(self, data, goal=1.0, cycles=100):
         """training algorithm"""
         self.data = data
+        self.w = [0 for _ in range(len(data))]
         # TODO: training algorithm
-        for datum in data:
-            for i in range(len(datum)-1):
-                # update the weights for each dimension of the data
-                self.w[i] = self.w[i] + self.r * datum[-1] * x # datum[-1] is the classification for a piece of data
+        # train the perceptron until it either reaches a certain accuracy or completes a certain number of trainings
+        while cycles and self.accuracy() < goal:  # while too many mis-classifications
+            cycles -= 1
+            for datum in data:
+                for i in range(1, len(datum)):
+                    # update the weights for each dimension of the data if it is predicted incorrectly
+                    if self.w[0] + sum([self.w[i] * datum[i] for i in range(1, len(datum))]) > 0:
+                        if datum[0] == 1:
+                            self.w[i] = self.w[i] + self.r * datum[0] * datum[i] # datum[0] is the classification for a piece of data
+                    elif datum[0] == -1:
+                        self.w[i] = self.w[i] + self.r * datum[0] * datum[i]
         pass
 
     def predict(self, x):
@@ -24,15 +32,24 @@ class Perceptron:
         # TODO: predict values
         pass
 
-    def accuracy(self, x_test, y_test):
+    def accuracy(self, test_data=self.data):
         """returns an accuracy rating of a trained perceptron based off a test set"""
         # TODO: accuracy algorithm
-        pass
+        correct = 0
+        for datum in test_data:
+            if self.w[0] + sum([datum[i] * self.w[i] for i in range(1, len(datum))]) > 0:
+                if datum[0] == 1:
+                    correct += 1
+            elif datum[0] == -1:
+                correct += 1
+        return correct / len(test_data)
 
     def visualize(self):
         """visualizes the training set and the perceptron"""
-        assert self.x_train, 'error: no training data'
-        sns.scatterplot(x=self.x_train, y=self.y_train, hue=self.category)
+        assert self.data, 'error: no training data'
+        assert len(self.data[0]) == 3, 'error: dataset has too many dimensions to plot'
+        # TODO: scatter-plot
+        # sns.scatterplot()
         # TODO: line-plot
         pass
 
