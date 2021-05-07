@@ -27,10 +27,9 @@ class Perceptron:
                         self.w[i] = self.w[i] + self.r * datum[0] * datum[i]
         pass
 
-    def predict(self, x):
-        """uses trained perceptron to predict y values"""
-        # TODO: predict values
-        pass
+    def predict(self, data):
+        """categorizes a set of data"""
+        return [[1] + data[i] if self.w[0] + sum([self.w[j+1] * data[i][j] for j in range(len(data[i]))]) > 0 else [-1] + data[i] for i in range(len(data))]
 
     def accuracy(self, test_data=self.data):
         """returns an accuracy rating of a trained perceptron based off a test set"""
