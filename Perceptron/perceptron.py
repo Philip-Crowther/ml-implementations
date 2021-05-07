@@ -25,7 +25,7 @@ class Perceptron:
 
     def predict(self, datum):
         """predicts for a single data point"""
-        return self.w[0] + sum([self.w[i] * datum[i] for i in range(len(1, datum))])
+        return self.w[0] + sum([self.w[i] * datum[i] for i in range(1, len(datum))])
 
     def classify(self, data):
         """classifies a set of data"""
