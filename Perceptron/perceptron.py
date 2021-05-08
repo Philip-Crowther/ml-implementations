@@ -6,12 +6,19 @@ class Perceptron:
     def __init__(self):
         self.w = None
 
-    def train(self, data, r=.5, goal=.99, cycles=150):
+    def train(self, data, r=.5, cycles=150):
         """training algorithm"""
         # initialize weights, first weight in self.w is the bias
         self.w = [0 for _ in range(len(data[0]))]
+        # store best encountered list of weights and its accuracy to avoid losing a more accurate set of weights that we encounter
+        best_w, best_accuracy = self.w, 0
         # train the perceptron until it either reaches a certain accuracy or completes a certain number of trainings
-        while cycles and self.accuracy(data) < goal:
+        while cycles:
+            # find current accuracy
+            accuracy = self.accuracy(data)
+            # update best accuracy and best weights
+            if accuracy > best_accuracy:
+                best_accuracy, best_w = accuracy, self.w
             # limit cycles
             cycles -= 1
             # test each item of data
@@ -22,6 +29,7 @@ class Perceptron:
                         self.w[i] = self.w[i] + r * datum[0] * datum[i]  # datum[0] is the classification for a piece of data
                     elif datum[0] == -1 and self.predict(datum) > 0:
                         self.w[i] = self.w[i] + r * datum[0] * datum[i]
+        self.w = best_w if best_accuracy > self.accuracy(data) else self.w
 
     def predict(self, datum):
         """predicts for a single data point"""
@@ -34,7 +42,6 @@ class Perceptron:
 
     def accuracy(self, test_data):
         """returns an accuracy rating of a trained perceptron based off a test set"""
-        # TODO: tune/troubleshoot accuracy algorithm
         correct = 0
         for datum in test_data:
             if datum[0] == 1 and self.predict(datum) > 0:
@@ -48,14 +55,12 @@ def main():
     """testing"""
 
     # 2D
-    bias = -10
-    data = [[r.randint(-50, 50), r.randint(-50, 50)] for _ in range(1000)]
+    bias = 5
+    data = [[r.randint(-50, 50), r.randint(-50, 50)] for _ in range(100)]
     data = [[1] + datum if datum[0] + bias > datum[1] else [-1] + datum for datum in data]
 
     accuracy_test_data = [[r.randint(-50, 50), r.randint(-50, 50)] for _ in range(100)]
     accuracy_test_data = [[1] + datum if datum[0] + bias > datum[1] else [-1] + datum for datum in accuracy_test_data]
-
-    predict_data =[[r.randint(-50, 50), r.randint(-50, 50)] for _ in range(100)]
 
     p = Perceptron()
     p.train(data)
