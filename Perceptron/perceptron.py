@@ -36,9 +36,19 @@ class Perceptron:
         """predicts for a single data point"""
         return self.w[0] + sum([self.w[i] * datum[i] for i in range(1, len(datum))])
 
-    def classify(self, data):
-        """classifies a set of data"""
-        return [[1] + data[i] if self.w[0] + sum([self.w[j + 1] * data[i][j] for j in range(len(data[i]))]) > 0 else [-1] + data[i] for i in range(len(data))]
+    def classify(self, data, activation_func=self.binary_step):
+        """classifies a set of data and sends it through an activation function"""
+        # storage for each piece of classified data
+        classified_data = []
+        # cycle through each item of data
+        for i in range(len(data)):
+            # find sum of all the weighted items in this piece of data
+            z = self.w[0] + sum([self.w[j + 1] * data[i][j] for j in range(len(data[i]))])
+            # apply activation function
+            classification = activation_func(z)
+            # insert classified data into storage
+            classified_data.append([classification] + data[i])
+        return classified_data
 
     def test_accuracy(self, test_data):
         """returns an accuracy rating of a trained perceptron based off a test set"""
@@ -49,6 +59,18 @@ class Perceptron:
             elif datum[0] == -1 and self.predict(datum) <= 0:
                 correct += 1
         return correct / len(test_data)
+
+    def binary_step(self, z):
+        """performs binary step activation function"""
+        a = 1 if z > 0 else -1
+        return a
+
+    def sigmoid_activation(self, z):
+        """performs sigmoid activation function"""
+        # TODO: sigmoid function
+        a = z
+        return a
+
 
 
 
