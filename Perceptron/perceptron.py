@@ -8,7 +8,7 @@ class Perceptron:
 
     def train(self, data, r=.5, cycles=150):
         """training algorithm"""
-        # initialize weights, first weight in self.w is the bias
+        # initialize weights, first weight (self.w[0]) is the model's bias
         self.w = [0 for _ in range(len(data[0]))]
         # store best encountered list of weights and its accuracy to avoid losing a more accurate set of weights that we encounter
         best_w, best_accuracy = self.w, 0
@@ -16,12 +16,12 @@ class Perceptron:
         while cycles:
             # find current accuracy
             accuracy = self.test_accuracy(data)
-            # update best accuracy and best weights
+            # update best accuracy and best weights if the current weight and accuracy are better
             if accuracy > best_accuracy:
                 best_accuracy, best_w = accuracy, self.w
-            # limit cycles
+            # countdown number of cycles left
             cycles -= 1
-            # test each item of data
+            # test each item of data for its accuracy
             for datum in data:
                 for i in range(1, len(datum)):
                     # update the weights for each dimension of the data if this piece of data was mis-predicted
@@ -29,6 +29,7 @@ class Perceptron:
                         self.w[i] = self.w[i] + r * datum[0] * datum[i]  # datum[0] is the classification for a piece of data
                     elif datum[0] == -1 and self.predict(datum) > 0:
                         self.w[i] = self.w[i] + r * datum[0] * datum[i]
+        # set this instances weight as the best encountered
         self.w = best_w if best_accuracy > self.test_accuracy(data) else self.w
 
     def predict(self, datum):
@@ -48,6 +49,7 @@ class Perceptron:
             elif datum[0] == -1 and self.predict(datum) <= 0:
                 correct += 1
         return correct / len(test_data)
+
 
 
 def main():
