@@ -1,5 +1,18 @@
 # perceptron.py - implementation of a perceptron
 import random as r
+from math import e
+
+
+def binary_step(z):
+    """performs binary step activation function"""
+    a = 1 if z > 0 else -1
+    return a
+
+
+def sigmoid_activation(z):
+    """performs sigmoid activation function"""
+    a = 1 / (1 + e ** -z)
+    return a
 
 
 class Perceptron:
@@ -36,7 +49,7 @@ class Perceptron:
         """predicts for a single data point"""
         return self.w[0] + sum([self.w[i] * datum[i] for i in range(1, len(datum))])
 
-    def classify(self, data, activation_func=self.binary_step):
+    def classify(self, data, activation_func=binary_step):
         """classifies a set of data and sends it through an activation function"""
         # storage for each piece of classified data
         classified_data = []
@@ -60,18 +73,7 @@ class Perceptron:
                 correct += 1
         return correct / len(test_data)
 
-    def binary_step(self, z):
-        """performs binary step activation function"""
-        a = 1 if z > 0 else -1
-        return a
-
-    def sigmoid_activation(self, z):
-        """performs sigmoid activation function"""
-        # TODO: sigmoid function
-        a = z
-        return a
-
-
+    # TODO: figure out how to store activation functions as class methods
 
 
 def main():
