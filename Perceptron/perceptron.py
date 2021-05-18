@@ -78,7 +78,17 @@ class Perceptron:
         return self.w[0] + sum([self.w[i] * datum[i] for i in range(1, len(datum))])
 
     def classify(self, data, activation_func=binary_step):
-        """classifies a set of data using specified activation function"""
+        """
+        classifies a set of data using specified activation function
+
+        Args:
+            data: array of unclassified data points
+            activation_func: activation function to pass classifications through (defaults as binary_step)
+
+        Return:
+            classified data points with their classification values sent through an activation
+            return format of data points is the classification in an array with its corresponding data following it [classification, x1, x2, x3, ...]
+        """
         # storage for each piece of classified data
         classified_data = []
         # cycle through each item of data
