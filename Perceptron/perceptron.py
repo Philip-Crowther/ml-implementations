@@ -20,7 +20,14 @@ class Perceptron:
         self.w = None
 
     def train(self, data, r=.5, cycles=150):
-        """training algorithm"""
+        """perceptron training algorithm, sets the weights for this instance of the Perceptron class
+
+        Args:
+            data:   array of n+1 sized arrays storing n-dimensional data points with their binary classification stored
+                    as data[0] [classification, x1, x2, x3, ...]
+            r:      learning rate (defaults at .5)
+            cycles: number of desired training cycles (defaults at 150)
+        """
         # initialize weights, first weight (self.w[0]) is the model's bias
         self.w = [0 for _ in range(len(data[0]))]
         # store best encountered list of weights and its accuracy to avoid losing a more accurate set of weights that we encounter
