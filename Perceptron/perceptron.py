@@ -36,6 +36,7 @@ class Perceptron:
 
     """
     def __init__(self):
+        """constructs holder for Perceptron's weights"""
         self.w = None
 
     def train(self, data, r=.5, cycles=150):
@@ -91,7 +92,15 @@ class Perceptron:
         return classified_data
 
     def test_accuracy(self, test_data):
-        """will test Perceptron's current accuracy on a data set with known classifications"""
+        """
+        tests Perceptron's current accuracy on a data set with known classifications
+
+        Args:
+            test_data:  data set with known correct classification to be tested against the perceptron's predictions
+                        each data point is an array formatted with the classification at data_point[0]
+        Return:
+            percentage of data points in the passed array the the perceptron classifies correctly in decimal format
+        """
         correct = 0
         for datum in test_data:
             if datum[0] == 1 and self.predict(datum) > 0:
