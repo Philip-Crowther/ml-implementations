@@ -16,11 +16,31 @@ def sigmoid_activation(z):
 
 
 class Perceptron:
+    """
+    Perceptron Class
+    ================
+
+    Attributes
+    ----------
+    w:  stores the Percepton's bias in w[0] and weights for each dimension of the data in the following spots:
+        each index after 0 in w, w[i], is the corresponding weight for the value at the same index in each data point,
+        data_point[i]. w is initialized as None, its length is determined when the training values are input to allow
+        the algorithm to train on datasets of any dimensionality
+
+    Methods
+    -------
+    train(data, r=.5, cycle=150):   perceptron training algorithm, sets the weights for this instance of the Perceptron class
+    predict(datum):                 predicts classification for a single data point based off of weights in self.w
+    classify(data, activation_func=binary_step): classifies a set of data using specified activation function
+    test_accuracy(test_data):       will test Perceptron's current accuracy on a data set with known classifications
+
+    """
     def __init__(self):
         self.w = None
 
     def train(self, data, r=.5, cycles=150):
-        """perceptron training algorithm, sets the weights for this instance of the Perceptron class
+        """
+        perceptron training algorithm, sets the weights for this instance of the Perceptron class
 
         Args:
             data:   array of n+1 sized arrays storing n-dimensional data points with their binary classification stored
@@ -53,11 +73,11 @@ class Perceptron:
         self.w = best_w if best_accuracy > self.test_accuracy(data) else self.w
 
     def predict(self, datum):
-        """predicts for a single data point"""
+        """predicts classification for a single data point based off of weights in self.w """
         return self.w[0] + sum([self.w[i] * datum[i] for i in range(1, len(datum))])
 
     def classify(self, data, activation_func=binary_step):
-        """classifies a set of data and sends it through an activation function"""
+        """classifies a set of data using specified activation function"""
         # storage for each piece of classified data
         classified_data = []
         # cycle through each item of data
@@ -71,7 +91,7 @@ class Perceptron:
         return classified_data
 
     def test_accuracy(self, test_data):
-        """returns an accuracy rating of a trained perceptron based off a test set"""
+        """will test Perceptron's current accuracy on a data set with known classifications"""
         correct = 0
         for datum in test_data:
             if datum[0] == 1 and self.predict(datum) > 0:
