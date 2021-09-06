@@ -1,5 +1,6 @@
-# testing for perceptron -- if you are looking at this file as it is, it is not usable--I moved this here from the perceptron file to clean it up
-# this file will be updated later
+# testing for perceptron
+from perceptron import Perceptron
+import random as r
 
 # 2D
 bias = 5

@@ -35,6 +35,7 @@ class Perceptron:
     test_accuracy(test_data):       will test Perceptron's current accuracy on a data set with known classifications
 
     """
+
     def __init__(self):
         """constructs holder for Perceptron's weights"""
         self.w = None
@@ -67,7 +68,8 @@ class Perceptron:
                 for i in range(1, len(datum)):
                     # update the weights for each dimension of the data if this piece of data was mis-predicted
                     if datum[0] == 1 and self.predict(datum) <= 0:
-                        self.w[i] = self.w[i] + r * datum[0] * datum[i]  # datum[0] is the classification for a piece of data
+                        self.w[i] = self.w[i] + r * datum[0] * datum[
+                            i]  # datum[0] is the classification for a piece of data
                     elif datum[0] == -1 and self.predict(datum) > 0:
                         self.w[i] = self.w[i] + r * datum[0] * datum[i]
         # set this instances weight as the best encountered
@@ -123,7 +125,7 @@ class Perceptron:
 
 
 def main():
-   return
+    pass
 
 
 if __name__ == '__main__':
