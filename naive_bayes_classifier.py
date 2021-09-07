@@ -1,6 +1,7 @@
 # naive_bayes_classifier.py - implementation of the naive bayes classification algorithm
 from collections import Counter
 
+
 class NaiveBayesClassifier:
     def __init__(self):
         """
@@ -66,13 +67,28 @@ class NaiveBayesClassifier:
         takes a list of x number of classifications and returns a dictionary of the probability
         that any given data point in the list is any given classification
         """
+        # get count of each classification
         counts = Counter(y_classifications)
         total_counts = len(y_classifications)
+        # calculate and store probability of each classification
         for classification in counts:
             self.proposition_priors[classification] = counts[classification] / total_counts
 
     def generate_evidence_priors(self, x):
-        pass
+        """
+        generates the evidence priors for each possible value of each feature of the model
+        """
+        number_of_data_points = len(x)
+        number_of_features = len(x[0])
+        # generate dictionaries for each feature to store its values
+        self.evidence_priors = [{} for _ in range(number_of_features)]
+        # go through each feature and get count of each value to calculate probability
+        for feature in range(number_of_features):
+            count_of_feature_values = Counter([x[i][feature] for i in range(number_of_data_points)])
+            # store probability of each value in corresponding feature dictionary
+            for possible_value in count_of_feature_values.keys():
+                self.evidence_priors[feature][possible_value] = count_of_feature_values[possible_value] / number_of_data_points
+
 
     def generate_likelihoods(self):
         pass
