@@ -1,4 +1,5 @@
 # naive_bayes_classifier.py - implementation of the naive bayes classification algorithm
+from collections import Counter
 
 class NaiveBayesClassifier:
     def __init__(self):
@@ -53,9 +54,27 @@ class NaiveBayesClassifier:
         """
         self.proposition_priors = {}
         self.evidence_priors = []
-        pass
+        self.likelihoods = []
 
     def fit(self, x_train, y_train):
+        self.generate_proposition_priors(y_train)
+        self.generate_evidence_priors(x_train)
+        self.generate_likelihoods()
+
+    def generate_proposition_priors(self, y_classifications):
+        """
+        takes a list of x number of classifications and returns a dictionary of the probability
+        that any given data point in the list is any given classification
+        """
+        counts = Counter(y_classifications)
+        total_counts = len(y_classifications)
+        for classification in counts:
+            self.proposition_priors[classification] = counts[classification] / total_counts
+
+    def generate_evidence_priors(self, x):
+        pass
+
+    def generate_likelihoods(self):
         pass
 
     def predict(self, x_test):
